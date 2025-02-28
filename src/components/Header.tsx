@@ -4,7 +4,11 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { FiMenu, FiX } from 'react-icons/fi';
 
-export default function Header() {
+interface HeaderProps {
+  locale?: string;
+}
+
+export default function Header({ locale = 'en' }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -15,11 +19,30 @@ export default function Header() {
     setIsMenuOpen(false);
   };
 
+  const t = {
+    en: {
+      features: 'Features',
+      howToUse: 'How to Use',
+      tips: 'Tips',
+      faq: 'FAQ',
+      about: 'About'
+    },
+    zh: {
+      features: '功能特点',
+      howToUse: '使用说明',
+      tips: '使用技巧',
+      faq: '常见问题',
+      about: '关于我们'
+    }
+  };
+
+  const text = locale === 'zh' ? t.zh : t.en;
+
   return (
     <header className="fixed top-0 left-0 right-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm z-50 border-b border-gray-200 dark:border-gray-700">
       <nav className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+          <Link href={locale === 'zh' ? '/zh' : '/'} className="text-2xl font-bold text-blue-600 dark:text-blue-400">
             olmOCR
           </Link>
 
@@ -34,11 +57,11 @@ export default function Header() {
 
           {/* Desktop navigation */}
           <div className="hidden md:flex gap-6">
-            <Link href="#features" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">Features</Link>
-            <Link href="#how-to-use" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">How to Use</Link>
-            <Link href="#tips" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">Tips</Link>
-            <Link href="#faq" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">FAQ</Link>
-            <Link href="/about" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">About</Link>
+            <Link href="#features" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">{text.features}</Link>
+            <Link href="#how-to-use" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">{text.howToUse}</Link>
+            <Link href="#tips" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">{text.tips}</Link>
+            <Link href="#faq" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">{text.faq}</Link>
+            <Link href={locale === 'zh' ? '/zh/about' : '/about'} className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">{text.about}</Link>
           </div>
         </div>
 
@@ -56,35 +79,35 @@ export default function Header() {
               onClick={closeMenu}
               className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors"
             >
-              Features
+              {text.features}
             </Link>
             <Link
               href="#how-to-use"
               onClick={closeMenu}
               className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors"
             >
-              How to Use
+              {text.howToUse}
             </Link>
             <Link
               href="#tips"
               onClick={closeMenu}
               className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors"
             >
-              Tips
+              {text.tips}
             </Link>
             <Link
               href="#faq"
               onClick={closeMenu}
               className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors"
             >
-              FAQ
+              {text.faq}
             </Link>
             <Link
-              href="/about"
+              href={locale === 'zh' ? '/zh/about' : '/about'}
               onClick={closeMenu}
               className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors"
             >
-              About
+              {text.about}
             </Link>
           </div>
         </div>

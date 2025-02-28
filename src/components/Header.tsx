@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { FiMenu, FiX } from 'react-icons/fi';
+import { FiMenu, FiX, FiGlobe } from 'react-icons/fi';
 
 interface HeaderProps {
   locale?: string;
@@ -25,14 +25,16 @@ export default function Header({ locale = 'en' }: HeaderProps) {
       howToUse: 'How to Use',
       tips: 'Tips',
       faq: 'FAQ',
-      about: 'About'
+      about: 'About',
+      switchLang: 'Switch to 中文'
     },
     zh: {
       features: '功能特点',
       howToUse: '使用说明',
       tips: '使用技巧',
       faq: '常见问题',
-      about: '关于我们'
+      about: '关于我们',
+      switchLang: 'Switch to English'
     }
   };
 
@@ -46,22 +48,37 @@ export default function Header({ locale = 'en' }: HeaderProps) {
             olmOCR
           </Link>
 
-          {/* Mobile menu button */}
-          <button
-            onClick={toggleMenu}
-            className="md:hidden text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400"
-            aria-label="Toggle menu"
-          >
-            {isMenuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
-          </button>
-
           {/* Desktop navigation */}
-          <div className="hidden md:flex gap-6">
+          <div className="hidden md:flex gap-6 items-center">
             <Link href="#features" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">{text.features}</Link>
             <Link href="#how-to-use" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">{text.howToUse}</Link>
             <Link href="#tips" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">{text.tips}</Link>
             <Link href="#faq" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">{text.faq}</Link>
             <Link href={locale === 'zh' ? '/zh/about' : '/about'} className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">{text.about}</Link>
+            <Link
+              href={locale === 'zh' ? '/' : '/zh'}
+              className="flex items-center gap-2 text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors"
+            >
+              <FiGlobe className="w-4 h-4" />
+              <span>{text.switchLang}</span>
+            </Link>
+          </div>
+
+          {/* Mobile menu button */}
+          <div className="md:hidden flex items-center gap-4">
+            <Link
+              href={locale === 'zh' ? '/' : '/zh'}
+              className="flex items-center gap-2 text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors"
+            >
+              <FiGlobe className="w-4 h-4" />
+            </Link>
+            <button
+              onClick={toggleMenu}
+              className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400"
+              aria-label="Toggle menu"
+            >
+              {isMenuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
+            </button>
           </div>
         </div>
 

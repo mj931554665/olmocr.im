@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { FiGithub, FiTwitter, FiLinkedin } from 'react-icons/fi';
+import { FiGithub, FiTwitter, FiLinkedin, FiGlobe } from 'react-icons/fi';
 
 interface FooterProps {
   locale?: string;
@@ -29,6 +29,10 @@ export default function Footer({ locale = 'en' }: FooterProps) {
         privacy: 'Privacy Policy',
         terms: 'Terms of Service'
       },
+      language: {
+        title: 'Language',
+        switchTo: 'Switch to 中文'
+      },
       copyright: '© {year} olmOCR. All rights reserved.'
     },
     zh: {
@@ -51,6 +55,10 @@ export default function Footer({ locale = 'en' }: FooterProps) {
         privacy: '隐私政策',
         terms: '服务条款'
       },
+      language: {
+        title: '语言',
+        switchTo: 'Switch to English'
+      },
       copyright: '© {year} olmOCR. 保留所有权利。'
     }
   };
@@ -60,7 +68,7 @@ export default function Footer({ locale = 'en' }: FooterProps) {
   return (
     <footer className="bg-gray-900 text-gray-300 py-12">
       <div className="container mx-auto max-w-6xl px-4">
-        <div className="grid md:grid-cols-4 gap-8 mb-8">
+        <div className="grid md:grid-cols-5 gap-8 mb-8">
           <div>
             <h3 className="text-white font-bold text-lg mb-4">olmOCR</h3>
             <p className="text-sm">
@@ -89,6 +97,20 @@ export default function Footer({ locale = 'en' }: FooterProps) {
             <ul className="space-y-2 text-sm">
               <li><Link href={locale === 'zh' ? '/zh/privacy' : '/privacy'} className="hover:text-white">{text.legal.privacy}</Link></li>
               <li><Link href={locale === 'zh' ? '/zh/terms' : '/terms'} className="hover:text-white">{text.legal.terms}</Link></li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="text-white font-semibold mb-4">{text.language.title}</h4>
+            <ul className="space-y-2 text-sm">
+              <li>
+                <Link
+                  href={locale === 'zh' ? '/' : '/zh'}
+                  className="hover:text-white flex items-center gap-2"
+                >
+                  <FiGlobe className="w-4 h-4" />
+                  <span>{text.language.switchTo}</span>
+                </Link>
+              </li>
             </ul>
           </div>
         </div>

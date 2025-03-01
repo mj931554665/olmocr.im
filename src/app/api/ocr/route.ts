@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server';
 import { headers } from 'next/headers';
 
-// 设置超时时间为50秒
-const TIMEOUT = 50000;
+// 设置超时时间为90秒
+const TIMEOUT = 90000;
 const MAX_RETRIES = 3;
-const RETRY_DELAY = 2000;
+const RETRY_DELAY = 3000;
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
 // CORS 配置
@@ -52,6 +52,7 @@ async function fetchWithRetry(
 ): Promise<Response> {
   for (let i = 0; i < retries; i++) {
     try {
+      console.log(`Attempt ${i + 1} of ${retries}`);
       const response = await fetch(url, options);
       
       // 如果是429错误，增加延迟时间
@@ -72,6 +73,7 @@ async function fetchWithRetry(
       
       return response;
     } catch (error) {
+      console.error(`Attempt ${i + 1} failed:`, error);
       if (i === retries - 1) throw error;
       const delay = retryDelay * Math.pow(2, i);
       console.log(`Request failed, retrying in ${delay}ms`);

@@ -19,6 +19,7 @@ export default function Hero({ locale = 'en' }: HeroProps) {
   const [copied, setCopied] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [originalFileName, setOriginalFileName] = useState<string | null>(null);
+  const [processingStatus, setProcessingStatus] = useState<string>('');
 
   const t = {
     en: {
@@ -34,6 +35,9 @@ export default function Hero({ locale = 'en' }: HeroProps) {
       uploadAnother: 'Upload another file to olmOCR',
       supportedFormats: 'Supports PDF and images',
       processing: 'Processing with olmOCR...',
+      processingLong: 'Processing large content, this may take a minute...',
+      processingRetry: 'Still processing, please wait...',
+      processingTimeout: 'Taking longer than expected, but still working...',
       resultTitle: 'olmOCR Result',
       copyText: 'Copy Text',
       copied: 'Copied!',
@@ -55,6 +59,9 @@ export default function Hero({ locale = 'en' }: HeroProps) {
       uploadAnother: '上传另一个文件到 olmOCR',
       supportedFormats: '支持 PDF 和图片格式',
       processing: '正在使用 olmOCR 处理...',
+      processingLong: '正在处理大量内容，可能需要一分钟...',
+      processingRetry: '仍在处理中，请稍候...',
+      processingTimeout: '处理时间超出预期，但仍在继续...',
       resultTitle: 'olmOCR 识别结果',
       copyText: '复制文本',
       copied: '已复制！',
@@ -70,6 +77,7 @@ export default function Hero({ locale = 'en' }: HeroProps) {
   const processFile = async (file: File) => {
     setLoading(true);
     setError(null);
+    setProcessingStatus(text.processing);
     setOriginalFileName(file.name);
     const formData = new FormData();
     formData.append('file', file);
@@ -81,8 +89,20 @@ export default function Hero({ locale = 'en' }: HeroProps) {
       try {
         console.log(`Sending request to OCR API (attempt ${retryCount + 1})...`);
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 30000);
+        const timeoutId = setTimeout(() => controller.abort(), 90000); // 90秒超时
 
+        // 设置处理状态提示
+        const statusUpdateInterval = setInterval(() => {
+          if (retryCount === 0) {
+            if (Date.now() - startTime > 30000) {
+              setProcessingStatus(text.processingLong);
+            }
+          } else {
+            setProcessingStatus(text.processingRetry);
+          }
+        }, 30000);
+
+        const startTime = Date.now();
         const response = await fetch('/api/ocr', {
           method: 'POST',
           body: formData,
@@ -90,10 +110,12 @@ export default function Hero({ locale = 'en' }: HeroProps) {
         });
 
         clearTimeout(timeoutId);
+        clearInterval(statusUpdateInterval);
 
         if (!response.ok) {
           if (response.status === 504) {
             console.log('Request timeout, retrying...');
+            setProcessingStatus(text.processingTimeout);
             retryCount++;
             if (retryCount < maxRetries) {
               await new Promise(resolve => setTimeout(resolve, 1000 * retryCount));
@@ -128,6 +150,7 @@ export default function Hero({ locale = 'en' }: HeroProps) {
       }
     }
     setLoading(false);
+    setProcessingStatus('');
   };
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -242,7 +265,7 @@ export default function Hero({ locale = 'en' }: HeroProps) {
                     {loading ? (
                       <div className="flex flex-col items-center">
                         <div className="animate-spin rounded-full h-5 w-5 md:h-6 md:w-6 border-b-2 border-blue-600 dark:border-blue-400 mb-2"></div>
-                        <span className="text-sm md:text-base">{text.processing}</span>
+                        <span className="text-sm md:text-base">{processingStatus || text.processing}</span>
                       </div>
                     ) : (
                       <div>

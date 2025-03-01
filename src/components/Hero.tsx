@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { FiUpload, FiGithub, FiBook, FiFileText } from 'react-icons/fi';
+import { FiUpload, FiGithub, FiFileText } from 'react-icons/fi';
 import { SiHuggingface } from 'react-icons/si';
 import Link from 'next/link';
 import { siteConfig } from '@/app/metadata';
@@ -24,7 +24,6 @@ export default function Hero({ locale = 'en' }: HeroProps) {
       title: 'olmOCR - Free Online Document Recognition',
       subtitle: 'Transform your documents into editable text in seconds. Free, fast, and secure.',
       description: 'Use olmOCR to process tables, equations, handwriting, and more with advanced AI technology. No registration required, start converting now!',
-      learnMore: 'View Documentation',
       resources: 'Resources',
       technicalReport: 'Technical Report',
       toolkitCode: 'Toolkit Code',
@@ -44,7 +43,6 @@ export default function Hero({ locale = 'en' }: HeroProps) {
       title: 'olmOCR - 免费在线文档识别',
       subtitle: '秒速将文档转换为可编辑文本。免费、快速、安全。',
       description: '使用 olmOCR 处理表格、公式、手写文字等，采用先进的 AI 技术。无需注册，立即开始转换！',
-      learnMore: '查看文档',
       resources: '相关资源',
       technicalReport: '技术报告',
       toolkitCode: '工具包代码',

@@ -101,6 +101,9 @@ async function processRequest(formData: FormData): Promise<Response> {
     );
   }
 
+  // 保存原始文件名
+  const originalFileName = file.name;
+
   // 生成安全的文件名
   const safeFileName = generateSafeFileName(file.name);
   
@@ -174,7 +177,12 @@ async function processRequest(formData: FormData): Promise<Response> {
     const data = await response.json();
     console.log('Response data:', data);
 
-    return NextResponse.json(data, { headers: corsHeaders });
+    // 在响应中添加原始文件名
+    return NextResponse.json({
+      ...data,
+      originalFileName,
+      processedFileName: safeFileName
+    }, { headers: corsHeaders });
   } catch (error: unknown) {
     clearTimeout(timeoutId);
     console.error('Detailed error:', error);
@@ -185,7 +193,8 @@ async function processRequest(formData: FormData): Promise<Response> {
         return NextResponse.json(
           { 
             error: 'Request timeout',
-            details: 'The OCR service is taking too long to respond. Please try again.'
+            details: 'The OCR service is taking too long to respond. Please try again.',
+            originalFileName
           },
           { status: 504, headers: corsHeaders }
         );
@@ -200,7 +209,8 @@ async function processRequest(formData: FormData): Promise<Response> {
     return NextResponse.json(
       { 
         error: 'Internal server error',
-        details: error instanceof Error ? error.message : 'Unknown error'
+        details: error instanceof Error ? error.message : 'Unknown error',
+        originalFileName
       },
       { status: 500, headers: corsHeaders }
     );

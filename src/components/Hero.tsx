@@ -18,6 +18,7 @@ export default function Hero({ locale = 'en' }: HeroProps) {
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [originalFileName, setOriginalFileName] = useState<string | null>(null);
 
   const t = {
     en: {
@@ -37,7 +38,9 @@ export default function Hero({ locale = 'en' }: HeroProps) {
       copyText: 'Copy Text',
       copied: 'Copied!',
       placeholder: 'olmOCR recognition results will be displayed here',
-      demoWarning: '⚠️ This is a demo version of olmOCR. For full features and batch processing, please use our toolkit. ⚠️'
+      demoWarning: '⚠️ This is a demo version of olmOCR. For full features and batch processing, please use our toolkit. ⚠️',
+      originalFile: 'Original File',
+      processedResult: 'Processed Result',
     },
     zh: {
       title: 'olmOCR - 免费在线文档识别',
@@ -56,7 +59,9 @@ export default function Hero({ locale = 'en' }: HeroProps) {
       copyText: '复制文本',
       copied: '已复制！',
       placeholder: '这里将显示 olmOCR 的识别结果',
-      demoWarning: '⚠️ 这是 olmOCR 的演示版本。如需完整功能和批量处理，请使用我们的工具包。 ⚠️'
+      demoWarning: '⚠️ 这是 olmOCR 的演示版本。如需完整功能和批量处理，请使用我们的工具包。 ⚠️',
+      originalFile: '原始文件',
+      processedResult: '处理结果',
     }
   };
 
@@ -65,6 +70,7 @@ export default function Hero({ locale = 'en' }: HeroProps) {
   const processFile = async (file: File) => {
     setLoading(true);
     setError(null);
+    setOriginalFileName(file.name);
     const formData = new FormData();
     formData.append('file', file);
 
@@ -75,7 +81,7 @@ export default function Hero({ locale = 'en' }: HeroProps) {
       try {
         console.log(`Sending request to OCR API (attempt ${retryCount + 1})...`);
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 30000); // 30秒超时
+        const timeoutId = setTimeout(() => controller.abort(), 30000);
 
         const response = await fetch('/api/ocr', {
           method: 'POST',
@@ -90,7 +96,7 @@ export default function Hero({ locale = 'en' }: HeroProps) {
             console.log('Request timeout, retrying...');
             retryCount++;
             if (retryCount < maxRetries) {
-              await new Promise(resolve => setTimeout(resolve, 1000 * retryCount)); // 递增延迟
+              await new Promise(resolve => setTimeout(resolve, 1000 * retryCount));
               continue;
             }
           }
@@ -106,7 +112,7 @@ export default function Hero({ locale = 'en' }: HeroProps) {
         }
 
         setResult(data.text || '');
-        break; // 成功后跳出循环
+        break;
       } catch (error) {
         console.error('Error during OCR:', error);
         if (retryCount === maxRetries - 1) {
@@ -160,7 +166,7 @@ export default function Hero({ locale = 'en' }: HeroProps) {
   };
 
   return (
-    <>
+    <div className="w-full max-w-5xl mx-auto px-4 py-8">
       <section className="pt-20 md:pt-24 pb-8 md:pb-16 px-4">
         <div className="container mx-auto max-w-6xl">
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-4 md:mb-6 text-gray-900 dark:text-white">
@@ -281,6 +287,49 @@ export default function Hero({ locale = 'en' }: HeroProps) {
         </div>
       </section>
       <Showcase locale={locale} />
-    </>
+
+      <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="bg-white/5 backdrop-blur-sm rounded-lg p-4">
+          <h3 className="text-lg font-semibold mb-2">{text.originalFile}</h3>
+          {originalFileName && (
+            <div className="text-sm text-gray-400 mb-2">
+              {originalFileName}
+            </div>
+          )}
+          {file && (
+            <img 
+              src={URL.createObjectURL(file)} 
+              alt="Original" 
+              className="max-w-full h-auto rounded-lg"
+              onLoad={() => URL.revokeObjectURL(URL.createObjectURL(file))}
+            />
+          )}
+        </div>
+
+        <div className="bg-white/5 backdrop-blur-sm rounded-lg p-4">
+          <h3 className="text-lg font-semibold mb-2">{text.processedResult}</h3>
+          <div className="relative">
+            <textarea
+              value={result}
+              readOnly
+              className="w-full h-[300px] bg-black/20 backdrop-blur-sm rounded-lg p-4 text-sm font-mono resize-none"
+              placeholder={text.placeholder}
+            />
+            <button
+              onClick={handleCopy}
+              className="absolute top-2 right-2 bg-white/10 hover:bg-white/20 rounded-lg px-3 py-1 text-sm transition-colors"
+            >
+              {copied ? text.copied : text.copyText}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {error && (
+        <div className="mt-4 text-red-500 text-sm">
+          {error}
+        </div>
+      )}
+    </div>
   );
 } 

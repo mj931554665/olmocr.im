@@ -61,36 +61,9 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    icon: [
-      { url: '/favicon.ico', sizes: '48x48' },
-      { url: '/favicon-32x32.png', sizes: '32x32' },
-      { url: '/favicon-16x16.png', sizes: '16x16' }
-    ],
+    icon: '/favicon.ico',
     shortcut: '/favicon.ico',
     apple: '/apple-touch-icon.png',
-    other: [
-      {
-        rel: 'apple-touch-icon',
-        url: '/apple-touch-icon.png',
-      },
-      {
-        rel: 'icon',
-        type: 'image/png',
-        sizes: '32x32',
-        url: '/favicon-32x32.png',
-      },
-      {
-        rel: 'icon',
-        type: 'image/png',
-        sizes: '16x16',
-        url: '/favicon-16x16.png',
-      },
-      {
-        rel: 'mask-icon',
-        url: '/android-chrome-192x192.png',
-        color: '#5bbad5',
-      },
-    ],
   },
   manifest: "/manifest.json",
   alternates: {
@@ -110,11 +83,8 @@ export default function RootLayout({
         <link rel="canonical" href={siteConfig.url} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-        <link rel="manifest" href="/manifest.json" />
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7730501363832084" crossOrigin="anonymous"></script>
       </head>
       <body className={`${inter.className} min-h-screen bg-background text-foreground antialiased`}>

@@ -26,6 +26,7 @@ export default function Header({ locale = 'en' }: HeaderProps) {
       tips: 'Tips',
       faq: 'FAQ',
       about: 'About',
+      olmOcr: 'olm OCR Guide',
       switchLang: 'Switch to 中文'
     },
     zh: {
@@ -34,6 +35,7 @@ export default function Header({ locale = 'en' }: HeaderProps) {
       tips: '使用技巧',
       faq: '常见问题',
       about: '关于我们',
+      olmOcr: 'olm OCR 指南',
       switchLang: 'Switch to English'
     }
   };
@@ -45,7 +47,7 @@ export default function Header({ locale = 'en' }: HeaderProps) {
       <nav className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
           <Link href={locale === 'zh' ? '/zh' : '/'} className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-            olmOCR
+            olm OCR
           </Link>
 
           {/* Desktop navigation */}
@@ -55,6 +57,7 @@ export default function Header({ locale = 'en' }: HeaderProps) {
             <Link href="#tips" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">{text.tips}</Link>
             <Link href="#faq" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">{text.faq}</Link>
             <Link href={locale === 'zh' ? '/zh/about' : '/about'} className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">{text.about}</Link>
+            <Link href={locale === 'zh' ? '/zh/olm-ocr' : '/olm-ocr'} className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">{text.olmOcr}</Link>
             <Link
               href={locale === 'zh' ? '/' : '/zh'}
               className="flex items-center gap-2 text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors"
@@ -125,6 +128,13 @@ export default function Header({ locale = 'en' }: HeaderProps) {
               className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors"
             >
               {text.about}
+            </Link>
+            <Link
+              href={locale === 'zh' ? '/zh/olm-ocr' : '/olm-ocr'}
+              onClick={closeMenu}
+              className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors"
+            >
+              {text.olmOcr}
             </Link>
           </div>
         </div>

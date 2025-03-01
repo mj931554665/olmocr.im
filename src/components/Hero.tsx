@@ -232,77 +232,104 @@ export default function Hero({ locale = 'en' }: HeroProps) {
             </div>
           </div>
           
-          <div className="flex flex-col md:grid md:grid-cols-2 gap-6 md:gap-8">
-            <div className="bg-gray-50 dark:bg-gray-800 p-4 md:p-6 rounded-lg">
-              <h2 className="text-xl md:text-2xl font-semibold mb-4 text-gray-900 dark:text-white">{text.uploadTitle}</h2>
-              <div 
-                className={`border-2 border-dashed ${
+          <div className="bg-gray-50 dark:bg-gray-800 p-4 md:p-6 rounded-lg mb-8">
+            <h2 className="text-xl md:text-2xl font-semibold mb-4 text-gray-900 dark:text-white">{text.uploadTitle}</h2>
+            <div 
+              className={`border-2 border-dashed ${
+                loading 
+                  ? 'border-gray-300 dark:border-gray-600' 
+                  : 'border-blue-300 dark:border-blue-500'
+              } rounded-lg p-4 md:p-8 text-center transition-colors bg-white dark:bg-gray-900`}
+              onDrop={handleDrop}
+              onDragOver={handleDragOver}
+            >
+              <input
+                type="file"
+                onChange={handleFileChange}
+                accept="image/*,.pdf"
+                className="hidden"
+                id="file-upload"
+                disabled={loading}
+              />
+              <label
+                htmlFor="file-upload"
+                className={`cursor-pointer flex flex-col items-center justify-center gap-3 md:gap-4 ${
                   loading 
-                    ? 'border-gray-300 dark:border-gray-600' 
-                    : 'border-blue-300 dark:border-blue-500'
-                } rounded-lg p-4 md:p-8 text-center transition-colors bg-white dark:bg-gray-900`}
-                onDrop={handleDrop}
-                onDragOver={handleDragOver}
+                    ? 'opacity-50' 
+                    : 'hover:text-blue-600 dark:hover:text-blue-400'
+                } text-gray-700 dark:text-gray-300`}
               >
-                <input
-                  type="file"
-                  onChange={handleFileChange}
-                  accept="image/*,.pdf"
-                  className="hidden"
-                  id="file-upload"
-                  disabled={loading}
-                />
-                <label
-                  htmlFor="file-upload"
-                  className={`cursor-pointer flex flex-col items-center justify-center gap-3 md:gap-4 ${
-                    loading 
-                      ? 'opacity-50' 
-                      : 'hover:text-blue-600 dark:hover:text-blue-400'
-                  } text-gray-700 dark:text-gray-300`}
-                >
-                  <FiUpload className="w-8 h-8 md:w-12 md:h-12" />
-                  <div>
-                    {loading ? (
-                      <div className="flex flex-col items-center">
-                        <div className="animate-spin rounded-full h-5 w-5 md:h-6 md:w-6 border-b-2 border-blue-600 dark:border-blue-400 mb-2"></div>
-                        <span className="text-sm md:text-base">{processingStatus || text.processing}</span>
-                      </div>
-                    ) : (
-                      <div>
-                        {file ? (
-                          <span className="text-sm md:text-base">{text.uploadAnother}</span>
-                        ) : (
-                          <span className="text-sm md:text-base">
-                            {text.uploadText}<br />
-                            <span className="text-xs md:text-sm text-gray-500 dark:text-gray-400">{text.supportedFormats}</span>
-                          </span>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                </label>
-                {error && (
-                  <p className="text-red-500 dark:text-red-400 text-xs md:text-sm mt-4">{error}</p>
-                )}
-              </div>
-            </div>
-
-            <div className="bg-gray-50 dark:bg-gray-800 p-4 md:p-6 rounded-lg">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl md:text-2xl font-semibold text-gray-900 dark:text-white">{text.resultTitle}</h2>
-                {result && (
-                  <CopyToClipboard text={result} onCopy={handleCopy}>
-                    <button className="text-sm md:text-base text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300">
-                      {copied ? text.copied : text.copyText}
-                    </button>
-                  </CopyToClipboard>
-                )}
-              </div>
-              <div className="bg-white dark:bg-gray-900 p-3 md:p-4 rounded-lg min-h-[150px] md:min-h-[200px] whitespace-pre-wrap text-sm md:text-base text-gray-800 dark:text-gray-200">
-                {result || text.placeholder}
-              </div>
+                <FiUpload className="w-8 h-8 md:w-12 md:h-12" />
+                <div>
+                  {loading ? (
+                    <div className="flex flex-col items-center">
+                      <div className="animate-spin rounded-full h-5 w-5 md:h-6 md:w-6 border-b-2 border-blue-600 dark:border-blue-400 mb-2"></div>
+                      <span className="text-sm md:text-base">{processingStatus || text.processing}</span>
+                    </div>
+                  ) : (
+                    <div>
+                      {file ? (
+                        <span className="text-sm md:text-base">{text.uploadAnother}</span>
+                      ) : (
+                        <span className="text-sm md:text-base">
+                          {text.uploadText}<br />
+                          <span className="text-xs md:text-sm text-gray-500 dark:text-gray-400">{text.supportedFormats}</span>
+                        </span>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </label>
+              {error && (
+                <p className="text-red-500 dark:text-red-400 text-xs md:text-sm mt-4">{error}</p>
+              )}
             </div>
           </div>
+
+          {(file || result) && (
+            <div className="bg-gray-50 dark:bg-gray-800 p-4 md:p-6 rounded-lg">
+              <h2 className="text-xl md:text-2xl font-semibold mb-4 text-gray-900 dark:text-white">{text.resultTitle}</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="bg-white dark:bg-gray-900 p-3 md:p-4 rounded-lg">
+                  <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-white">{text.originalFile}</h3>
+                  {originalFileName && (
+                    <div className="text-sm text-gray-500 dark:text-gray-400 mb-2">
+                      {originalFileName}
+                    </div>
+                  )}
+                  {file && (
+                    <img 
+                      src={URL.createObjectURL(file)} 
+                      alt="Original" 
+                      className="max-w-full h-auto rounded-lg"
+                      onLoad={() => URL.revokeObjectURL(URL.createObjectURL(file))}
+                    />
+                  )}
+                </div>
+
+                <div className="bg-white dark:bg-gray-900 p-3 md:p-4 rounded-lg">
+                  <div className="flex justify-between items-center mb-2">
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{text.processedResult}</h3>
+                    {result && (
+                      <CopyToClipboard text={result} onCopy={handleCopy}>
+                        <button className="text-sm text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300">
+                          {copied ? text.copied : text.copyText}
+                        </button>
+                      </CopyToClipboard>
+                    )}
+                  </div>
+                  <div className="relative">
+                    <textarea
+                      value={result}
+                      readOnly
+                      className="w-full h-[400px] bg-gray-50 dark:bg-gray-800 rounded-lg p-4 text-sm font-mono resize-none text-gray-800 dark:text-gray-200"
+                      placeholder={text.placeholder}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
           <div className="mt-8 text-center text-sm text-gray-500 dark:text-gray-400">
             {text.demoWarning}
@@ -310,49 +337,6 @@ export default function Hero({ locale = 'en' }: HeroProps) {
         </div>
       </section>
       <Showcase locale={locale} />
-
-      <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="bg-white/5 backdrop-blur-sm rounded-lg p-4">
-          <h3 className="text-lg font-semibold mb-2">{text.originalFile}</h3>
-          {originalFileName && (
-            <div className="text-sm text-gray-400 mb-2">
-              {originalFileName}
-            </div>
-          )}
-          {file && (
-            <img 
-              src={URL.createObjectURL(file)} 
-              alt="Original" 
-              className="max-w-full h-auto rounded-lg"
-              onLoad={() => URL.revokeObjectURL(URL.createObjectURL(file))}
-            />
-          )}
-        </div>
-
-        <div className="bg-white/5 backdrop-blur-sm rounded-lg p-4">
-          <h3 className="text-lg font-semibold mb-2">{text.processedResult}</h3>
-          <div className="relative">
-            <textarea
-              value={result}
-              readOnly
-              className="w-full h-[300px] bg-black/20 backdrop-blur-sm rounded-lg p-4 text-sm font-mono resize-none"
-              placeholder={text.placeholder}
-            />
-            <button
-              onClick={handleCopy}
-              className="absolute top-2 right-2 bg-white/10 hover:bg-white/20 rounded-lg px-3 py-1 text-sm transition-colors"
-            >
-              {copied ? text.copied : text.copyText}
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {error && (
-        <div className="mt-4 text-red-500 text-sm">
-          {error}
-        </div>
-      )}
     </div>
   );
 } 

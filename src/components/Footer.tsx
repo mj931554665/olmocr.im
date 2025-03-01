@@ -33,7 +33,8 @@ export default function Footer({ locale = 'en' }: FooterProps) {
         title: 'Language',
         switchTo: 'Switch to 中文'
       },
-      copyright: '© {year} olmOCR. All rights reserved.'
+      copyright: '© {year} olmOCR. All rights reserved.',
+      partners: 'Partners & Links'
     },
     zh: {
       description: '一款用于智能文档识别的开源工具，由 AI 技术驱动。',
@@ -59,7 +60,8 @@ export default function Footer({ locale = 'en' }: FooterProps) {
         title: '语言',
         switchTo: 'Switch to English'
       },
-      copyright: '© {year} olmOCR. 保留所有权利。'
+      copyright: '© {year} olmOCR. 保留所有权利。',
+      partners: '合作伙伴与链接'
     }
   };
 
@@ -115,6 +117,21 @@ export default function Footer({ locale = 'en' }: FooterProps) {
           </div>
         </div>
         
+        <div className="border-t border-gray-800 py-8">
+          <h4 className="text-white font-semibold mb-4 text-center">{text.partners}</h4>
+          <div className="flex flex-wrap justify-center gap-4 text-sm">
+            <a
+              href="https://www.ai-tool.xyz/"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="AI Tools Directory"
+              className="text-gray-400 hover:text-white transition-colors"
+            >
+              AI Tools Directory
+            </a>
+          </div>
+        </div>
+
         <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-sm mb-4 md:mb-0">
             {text.copyright.replace('{year}', currentYear.toString())}

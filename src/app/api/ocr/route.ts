@@ -1,7 +1,30 @@
 import { NextResponse } from 'next/server';
 
-// 设置超时时间为8秒（Vercel限制为10秒）
-const TIMEOUT = 8000;
+// 设置超时时间为25秒
+const TIMEOUT = 25000;
+const MAX_RETRIES = 3;
+const RETRY_DELAY = 1000;
+
+async function fetchWithRetry(
+  url: string,
+  options: RequestInit,
+  retries: number = MAX_RETRIES
+): Promise<Response> {
+  try {
+    const response = await fetch(url, options);
+    if (!response.ok && retries > 0) {
+      await new Promise(resolve => setTimeout(resolve, RETRY_DELAY));
+      return fetchWithRetry(url, options, retries - 1);
+    }
+    return response;
+  } catch (error) {
+    if (retries > 0) {
+      await new Promise(resolve => setTimeout(resolve, RETRY_DELAY));
+      return fetchWithRetry(url, options, retries - 1);
+    }
+    throw error;
+  }
+}
 
 export async function POST(request: Request) {
   try {
@@ -35,13 +58,13 @@ export async function POST(request: Request) {
     const timeoutId = setTimeout(() => controller.abort(), TIMEOUT);
 
     try {
-      const response = await fetch('https://www.olmocr.com/api/ocr', {
+      const response = await fetchWithRetry('https://www.olmocr.com/api/ocr', {
         method: 'POST',
         body: newFormData,
         signal: controller.signal,
         headers: {
           'Accept': 'application/json',
-          'User-Agent': 'Mozilla/5.0',
+          'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)',
           'Origin': request.headers.get('origin') || 'https://olmocr.im',
           'Referer': request.headers.get('referer') || 'https://olmocr.im'
         },
@@ -76,9 +99,12 @@ export async function POST(request: Request) {
       clearTimeout(timeoutId);
       if (fetchError instanceof Error) {
         if (fetchError.name === 'AbortError') {
-          console.error('Request timeout');
+          console.error('Request timeout after retries');
           return NextResponse.json(
-            { error: 'Request timeout' },
+            { 
+              error: 'Request timeout after retries',
+              details: 'The OCR service is taking too long to respond. Please try again with a smaller file or try later.'
+            },
             { status: 504 }
           );
         }

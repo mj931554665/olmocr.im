@@ -68,32 +68,60 @@ export default function Hero({ locale = 'en' }: HeroProps) {
     const formData = new FormData();
     formData.append('file', file);
 
-    try {
-      console.log('Sending request to OCR API...');
-      const response = await fetch('/api/ocr', {
-        method: 'POST',
-        body: formData,
-      });
+    const maxRetries = 3;
+    let retryCount = 0;
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+    while (retryCount < maxRetries) {
+      try {
+        console.log(`Sending request to OCR API (attempt ${retryCount + 1})...`);
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 30000); // 30秒超时
+
+        const response = await fetch('/api/ocr', {
+          method: 'POST',
+          body: formData,
+          signal: controller.signal
+        });
+
+        clearTimeout(timeoutId);
+
+        if (!response.ok) {
+          if (response.status === 504) {
+            console.log('Request timeout, retrying...');
+            retryCount++;
+            if (retryCount < maxRetries) {
+              await new Promise(resolve => setTimeout(resolve, 1000 * retryCount)); // 递增延迟
+              continue;
+            }
+          }
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        console.log('Response received from OCR API');
+        const data = await response.json();
+        console.log('Response data:', data);
+        
+        if (data.error) {
+          throw new Error(data.error);
+        }
+
+        setResult(data.text || '');
+        break; // 成功后跳出循环
+      } catch (error) {
+        console.error('Error during OCR:', error);
+        if (retryCount === maxRetries - 1) {
+          setError(
+            error instanceof Error 
+              ? `处理失败: ${error.message}. 请尝试使用更小的文件或稍后再试。` 
+              : '处理过程中出现错误'
+          );
+        } else {
+          retryCount++;
+          await new Promise(resolve => setTimeout(resolve, 1000 * retryCount));
+        }
       }
-
-      console.log('Response received from OCR API');
-      const data = await response.json();
-      console.log('Response data:', data);
-      
-      if (data.error) {
-        throw new Error(data.error);
-      }
-
-      setResult(data.text || '');
-    } catch (error) {
-      console.error('Error during OCR:', error);
-      setError(error instanceof Error ? error.message : 'An error occurred during processing');
-    } finally {
-      setLoading(false);
     }
+    setLoading(false);
   };
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {

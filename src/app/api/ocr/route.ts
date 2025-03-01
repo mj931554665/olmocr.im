@@ -14,6 +14,18 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Requested-With',
 };
 
+// 生成安全的文件名
+function generateSafeFileName(originalName: string): string {
+  // 获取文件扩展名
+  const ext = originalName.split('.').pop() || '';
+  // 生成时间戳
+  const timestamp = new Date().getTime();
+  // 生成随机字符串
+  const random = Math.random().toString(36).substring(2, 8);
+  // 组合新文件名
+  return `ocr_${timestamp}_${random}.${ext}`;
+}
+
 // OPTIONS 预检请求处理
 export async function OPTIONS() {
   return NextResponse.json({}, { headers: corsHeaders });
@@ -89,17 +101,33 @@ async function processRequest(formData: FormData): Promise<Response> {
     );
   }
 
+  // 生成安全的文件名
+  const safeFileName = generateSafeFileName(file.name);
+  
+  // 创建新的File对象，使用安全的文件名
+  const safeFile = new File([file], safeFileName, {
+    type: file.type,
+    lastModified: file.lastModified,
+  });
+
   // 打印详细的文件信息用于调试
-  console.log('File info:', {
+  console.log('Original file info:', {
     name: file.name,
     type: file.type,
     size: file.size,
     lastModified: file.lastModified
   });
+  
+  console.log('Safe file info:', {
+    name: safeFile.name,
+    type: safeFile.type,
+    size: safeFile.size,
+    lastModified: safeFile.lastModified
+  });
 
   // 创建新的FormData
   const newFormData = new FormData();
-  newFormData.append('file', file);
+  newFormData.append('file', safeFile);
 
   console.log('Forwarding request to olmocr.com');
   

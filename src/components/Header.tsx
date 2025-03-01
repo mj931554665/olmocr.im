@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { FiMenu, FiX, FiGlobe } from 'react-icons/fi';
+import { usePathname } from 'next/navigation';
 
 interface HeaderProps {
   locale?: string;
@@ -10,6 +11,8 @@ interface HeaderProps {
 
 export default function Header({ locale = 'en' }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const pathname = usePathname();
+  const isOlmOcrPage = pathname.includes('/olm-ocr');
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -42,6 +45,96 @@ export default function Header({ locale = 'en' }: HeaderProps) {
 
   const text = locale === 'zh' ? t.zh : t.en;
 
+  const renderNavLinks = () => {
+    if (isOlmOcrPage) {
+      return (
+        <>
+          <Link href={locale === 'zh' ? '/zh/about' : '/about'} className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">{text.about}</Link>
+          <Link href={locale === 'zh' ? '/' : '/'} className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">Home</Link>
+        </>
+      );
+    }
+    return (
+      <>
+        <Link href="#features" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">{text.features}</Link>
+        <Link href="#how-to-use" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">{text.howToUse}</Link>
+        <Link href="#tips" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">{text.tips}</Link>
+        <Link href="#faq" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">{text.faq}</Link>
+        <Link href={locale === 'zh' ? '/zh/about' : '/about'} className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">{text.about}</Link>
+        <Link href={locale === 'zh' ? '/zh/olm-ocr' : '/olm-ocr'} className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">{text.olmOcr}</Link>
+      </>
+    );
+  };
+
+  const renderMobileNavLinks = () => {
+    if (isOlmOcrPage) {
+      return (
+        <>
+          <Link
+            href={locale === 'zh' ? '/zh/about' : '/about'}
+            onClick={closeMenu}
+            className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors"
+          >
+            {text.about}
+          </Link>
+          <Link
+            href={locale === 'zh' ? '/' : '/'}
+            onClick={closeMenu}
+            className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors"
+          >
+            Home
+          </Link>
+        </>
+      );
+    }
+    return (
+      <>
+        <Link
+          href="#features"
+          onClick={closeMenu}
+          className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors"
+        >
+          {text.features}
+        </Link>
+        <Link
+          href="#how-to-use"
+          onClick={closeMenu}
+          className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors"
+        >
+          {text.howToUse}
+        </Link>
+        <Link
+          href="#tips"
+          onClick={closeMenu}
+          className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors"
+        >
+          {text.tips}
+        </Link>
+        <Link
+          href="#faq"
+          onClick={closeMenu}
+          className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors"
+        >
+          {text.faq}
+        </Link>
+        <Link
+          href={locale === 'zh' ? '/zh/about' : '/about'}
+          onClick={closeMenu}
+          className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors"
+        >
+          {text.about}
+        </Link>
+        <Link
+          href={locale === 'zh' ? '/zh/olm-ocr' : '/olm-ocr'}
+          onClick={closeMenu}
+          className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors"
+        >
+          {text.olmOcr}
+        </Link>
+      </>
+    );
+  };
+
   return (
     <header className="fixed top-0 left-0 right-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm z-50 border-b border-gray-200 dark:border-gray-700">
       <nav className="container mx-auto px-4 py-4">
@@ -52,12 +145,7 @@ export default function Header({ locale = 'en' }: HeaderProps) {
 
           {/* Desktop navigation */}
           <div className="hidden md:flex gap-6 items-center">
-            <Link href="#features" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">{text.features}</Link>
-            <Link href="#how-to-use" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">{text.howToUse}</Link>
-            <Link href="#tips" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">{text.tips}</Link>
-            <Link href="#faq" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">{text.faq}</Link>
-            <Link href={locale === 'zh' ? '/zh/about' : '/about'} className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">{text.about}</Link>
-            <Link href={locale === 'zh' ? '/zh/olm-ocr' : '/olm-ocr'} className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">{text.olmOcr}</Link>
+            {renderNavLinks()}
             <Link
               href={locale === 'zh' ? '/' : '/zh'}
               className="flex items-center gap-2 text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors"
@@ -94,48 +182,7 @@ export default function Header({ locale = 'en' }: HeaderProps) {
           }`}
         >
           <div className="flex flex-col gap-4 py-4">
-            <Link
-              href="#features"
-              onClick={closeMenu}
-              className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors"
-            >
-              {text.features}
-            </Link>
-            <Link
-              href="#how-to-use"
-              onClick={closeMenu}
-              className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors"
-            >
-              {text.howToUse}
-            </Link>
-            <Link
-              href="#tips"
-              onClick={closeMenu}
-              className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors"
-            >
-              {text.tips}
-            </Link>
-            <Link
-              href="#faq"
-              onClick={closeMenu}
-              className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors"
-            >
-              {text.faq}
-            </Link>
-            <Link
-              href={locale === 'zh' ? '/zh/about' : '/about'}
-              onClick={closeMenu}
-              className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors"
-            >
-              {text.about}
-            </Link>
-            <Link
-              href={locale === 'zh' ? '/zh/olm-ocr' : '/olm-ocr'}
-              onClick={closeMenu}
-              className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors"
-            >
-              {text.olmOcr}
-            </Link>
+            {renderMobileNavLinks()}
           </div>
         </div>
       </nav>

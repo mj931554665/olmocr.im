@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { siteConfig } from '../metadata';
 import Header from '@/components/Header';
+import Hero from '@/components/Hero';
 import Features from '@/components/Features';
 import HowToUse from '@/components/HowToUse';
 import Tips from '@/components/Tips';
@@ -9,8 +10,8 @@ import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
-  title: 'olm OCR - Free Online Document Recognition | Instant Text Conversion',
-  description: 'Transform your documents into editable text with olm OCR. Process tables, equations, and handwriting using advanced AI technology. Free, secure, and no registration required - start converting now!',
+  title: 'olm OCR - Free Online Document Recognition | Convert with Confidence',
+  description: 'Transform your documents into editable text in seconds with olm OCR. Free, fast, and secure - no registration needed. Process tables, equations, handwriting and more using advanced AI technology.',
   keywords: ['olm OCR', 'document recognition', 'OCR tool', 'table recognition', 'PDF to text', 'formula recognition', 'open source OCR', 'online OCR', 'free OCR'],
   alternates: {
     canonical: `${siteConfig.url}/olm-ocr`,
@@ -21,13 +22,14 @@ export default function OlmOcrPage() {
   return (
     <main className="min-h-screen">
       <Header />
-      <div className="py-24 px-4">
+      <Hero />
+      <div className="py-8 px-4">
         <div className="container mx-auto max-w-6xl">
           <div className="prose dark:prose-invert max-w-none">
-            <h1 className="text-3xl md:text-4xl font-bold mb-6">olm OCR - Free Document Recognition Made Simple</h1>
+            <h1 className="text-3xl md:text-4xl font-bold mb-6">olm OCR - Instant Document Recognition</h1>
             <p className="text-lg mb-4">
-              Transform your documents into editable text in seconds with olm OCR. Our advanced AI-powered tool handles everything from simple text to complex tables and mathematical equations.
-              Experience professional-grade document recognition without any cost or registration requirements.
+              Convert any document to editable text instantly with olm OCR. Process everything from handwritten notes to complex tables with our advanced AI technology.
+              Start converting now - it's free, fast, and requires no registration.
             </p>
             <h2 className="text-2xl font-bold mt-8 mb-4">Why Choose olm OCR?</h2>
             <ul className="list-disc pl-6 mb-6">

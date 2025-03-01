@@ -1,10 +1,23 @@
 import { NextResponse } from 'next/server';
+import { headers } from 'next/headers';
 
 // 设置超时时间为30秒
 const TIMEOUT = 30000;
 const MAX_RETRIES = 3;
 const RETRY_DELAY = 2000;
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+
+// CORS 配置
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+};
+
+// OPTIONS 预检请求处理
+export async function OPTIONS() {
+  return NextResponse.json({}, { headers: corsHeaders });
+}
 
 // 简单的请求队列实现
 interface QueueItem {
@@ -161,6 +174,12 @@ async function processRequest(formData: FormData): Promise<Response> {
 }
 
 export async function POST(request: Request) {
+  // 添加 CORS 头
+  const response = NextResponse.next();
+  Object.entries(corsHeaders).forEach(([key, value]) => {
+    response.headers.set(key, value);
+  });
+
   try {
     console.log('Received OCR request');
     const formData = await request.formData();
@@ -182,7 +201,7 @@ export async function POST(request: Request) {
       promise: requestPromise,
       status: 'pending'
     };
-    
+
     requestQueue.push(queueItem);
 
     // 更新请求状态
@@ -190,12 +209,22 @@ export async function POST(request: Request) {
       .then(() => { queueItem.status = 'fulfilled'; })
       .catch(() => { queueItem.status = 'rejected'; });
 
-    return await requestPromise;
+    const result = await requestPromise;
+    
+    // 确保响应包含 CORS 头
+    Object.entries(corsHeaders).forEach(([key, value]) => {
+      result.headers.set(key, value);
+    });
+    
+    return result;
   } catch (error) {
     console.error('Unexpected error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
-      { status: 500 }
+      { 
+        status: 500,
+        headers: corsHeaders
+      }
     );
   }
 } 

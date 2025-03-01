@@ -82,6 +82,7 @@ export default function RootLayout({
         <link rel="canonical" href={siteConfig.url} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7730501363832084" crossOrigin="anonymous"></script>
       </head>
       <body className={`${inter.className} min-h-screen bg-background text-foreground antialiased`}>
         {children}

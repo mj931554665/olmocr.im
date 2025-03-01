@@ -12,6 +12,9 @@ interface HeaderProps {
 export default function Header({ locale = 'en' }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
+  
+  // 判断当前页面类型
+  const isHomePage = pathname === '/' || pathname === '/zh';
   const isOlmOcrPage = pathname.includes('/olm-ocr');
 
   const toggleMenu = () => {
@@ -24,19 +27,13 @@ export default function Header({ locale = 'en' }: HeaderProps) {
 
   const t = {
     en: {
-      features: 'Features',
-      howToUse: 'How to Use',
-      tips: 'Tips',
-      faq: 'FAQ',
+      home: 'Home',
       about: 'About',
       olmOcr: 'olm OCR Guide',
       switchLang: 'Switch to 中文'
     },
     zh: {
-      features: '功能特点',
-      howToUse: '使用说明',
-      tips: '使用技巧',
-      faq: '常见问题',
+      home: '首页',
       about: '关于我们',
       olmOcr: 'olm OCR 指南',
       switchLang: 'Switch to English'
@@ -49,19 +46,28 @@ export default function Header({ locale = 'en' }: HeaderProps) {
     if (isOlmOcrPage) {
       return (
         <>
-          <Link href={locale === 'zh' ? '/zh/about' : '/about'} className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">{text.about}</Link>
-          <Link href={locale === 'zh' ? '/' : '/'} className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">Home</Link>
+          <Link href={locale === 'zh' ? '/zh' : '/'} className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">
+            {text.home}
+          </Link>
+          <Link href={locale === 'zh' ? '/zh/about' : '/about'} className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">
+            {text.about}
+          </Link>
         </>
       );
     }
     return (
       <>
-        <Link href="#features" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">{text.features}</Link>
-        <Link href="#how-to-use" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">{text.howToUse}</Link>
-        <Link href="#tips" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">{text.tips}</Link>
-        <Link href="#faq" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">{text.faq}</Link>
-        <Link href={locale === 'zh' ? '/zh/about' : '/about'} className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">{text.about}</Link>
-        <Link href={locale === 'zh' ? '/zh/olm-ocr' : '/olm-ocr'} className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">{text.olmOcr}</Link>
+        {!isHomePage && (
+          <Link href={locale === 'zh' ? '/zh' : '/'} className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">
+            {text.home}
+          </Link>
+        )}
+        <Link href={locale === 'zh' ? '/zh/about' : '/about'} className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">
+          {text.about}
+        </Link>
+        <Link href={locale === 'zh' ? '/zh/olm-ocr' : '/olm-ocr'} className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">
+          {text.olmOcr}
+        </Link>
       </>
     );
   };
@@ -71,52 +77,33 @@ export default function Header({ locale = 'en' }: HeaderProps) {
       return (
         <>
           <Link
+            href={locale === 'zh' ? '/zh' : '/'}
+            onClick={closeMenu}
+            className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors"
+          >
+            {text.home}
+          </Link>
+          <Link
             href={locale === 'zh' ? '/zh/about' : '/about'}
             onClick={closeMenu}
             className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors"
           >
             {text.about}
           </Link>
-          <Link
-            href={locale === 'zh' ? '/' : '/'}
-            onClick={closeMenu}
-            className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors"
-          >
-            Home
-          </Link>
         </>
       );
     }
     return (
       <>
-        <Link
-          href="#features"
-          onClick={closeMenu}
-          className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors"
-        >
-          {text.features}
-        </Link>
-        <Link
-          href="#how-to-use"
-          onClick={closeMenu}
-          className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors"
-        >
-          {text.howToUse}
-        </Link>
-        <Link
-          href="#tips"
-          onClick={closeMenu}
-          className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors"
-        >
-          {text.tips}
-        </Link>
-        <Link
-          href="#faq"
-          onClick={closeMenu}
-          className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors"
-        >
-          {text.faq}
-        </Link>
+        {!isHomePage && (
+          <Link
+            href={locale === 'zh' ? '/zh' : '/'}
+            onClick={closeMenu}
+            className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors"
+          >
+            {text.home}
+          </Link>
+        )}
         <Link
           href={locale === 'zh' ? '/zh/about' : '/about'}
           onClick={closeMenu}

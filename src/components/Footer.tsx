@@ -1,5 +1,8 @@
+'use client';
+
 import Link from 'next/link';
 import { FiGithub, FiTwitter, FiLinkedin, FiGlobe } from 'react-icons/fi';
+import { usePathname } from 'next/navigation';
 
 interface FooterProps {
   locale?: string;
@@ -7,6 +10,13 @@ interface FooterProps {
 
 export default function Footer({ locale = 'en' }: FooterProps) {
   const currentYear = new Date().getFullYear();
+  const pathname = usePathname();
+
+  const languages = [
+    { code: 'en', name: 'English', path: '/' },
+    { code: 'zh', name: '中文', path: '/zh' },
+    // 后续可以添加更多语言
+  ];
 
   const t = {
     en: {
@@ -31,7 +41,7 @@ export default function Footer({ locale = 'en' }: FooterProps) {
       },
       language: {
         title: 'Language',
-        switchTo: 'Switch to 中文'
+        current: 'Current Language'
       },
       copyright: '© {year} olmOCR. All rights reserved.',
       partners: 'Partners & Links'
@@ -58,7 +68,7 @@ export default function Footer({ locale = 'en' }: FooterProps) {
       },
       language: {
         title: '语言',
-        switchTo: 'Switch to English'
+        current: '当前语言'
       },
       copyright: '© {year} olmOCR. 保留所有权利。',
       partners: '合作伙伴与链接'
@@ -68,29 +78,29 @@ export default function Footer({ locale = 'en' }: FooterProps) {
   const text = locale === 'zh' ? t.zh : t.en;
 
   return (
-    <footer className="bg-gray-900 text-gray-300 py-12">
-      <div className="container mx-auto max-w-6xl px-4">
-        <div className="grid md:grid-cols-5 gap-8 mb-8">
-          <div>
-            <h3 className="text-white font-bold text-lg mb-4">olmOCR</h3>
-            <p className="text-sm">
-              {text.description}
-            </p>
+    <footer className="bg-gray-900 text-gray-400 py-12">
+      <div className="container mx-auto px-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-8">
+          <div className="lg:col-span-2">
+            <Link href={locale === 'zh' ? '/zh' : '/'} className="text-2xl font-bold text-white mb-4 block">
+              olm OCR
+            </Link>
+            <p className="text-sm mb-4">{text.description}</p>
           </div>
           <div>
             <h4 className="text-white font-semibold mb-4">{text.product.title}</h4>
             <ul className="space-y-2 text-sm">
-              <li><Link href="#features" className="hover:text-white">{text.product.features}</Link></li>
-              <li><Link href="#how-to-use" className="hover:text-white">{text.product.howToUse}</Link></li>
-              <li><Link href="#tips" className="hover:text-white">{text.product.bestPractices}</Link></li>
-              <li><Link href="#faq" className="hover:text-white">{text.product.faq}</Link></li>
+              <li><a href="#features" className="hover:text-white">{text.product.features}</a></li>
+              <li><a href="#how-to-use" className="hover:text-white">{text.product.howToUse}</a></li>
+              <li><a href="#best-practices" className="hover:text-white">{text.product.bestPractices}</a></li>
+              <li><a href="#faq" className="hover:text-white">{text.product.faq}</a></li>
             </ul>
           </div>
           <div>
             <h4 className="text-white font-semibold mb-4">{text.resources.title}</h4>
             <ul className="space-y-2 text-sm">
-              <li><a href="https://github.com/allenai/olmocr" target="_blank" rel="noopener noreferrer" className="hover:text-white">{text.resources.documentation}</a></li>
-              <li><a href="https://github.com/allenai/olmocr" target="_blank" rel="noopener noreferrer" className="hover:text-white">{text.resources.apiReference}</a></li>
+              <li><Link href="/docs" className="hover:text-white">{text.resources.documentation}</Link></li>
+              <li><Link href="/api" className="hover:text-white">{text.resources.apiReference}</Link></li>
               <li><Link href={locale === 'zh' ? '/zh/about' : '/about'} className="hover:text-white">{text.resources.aboutUs}</Link></li>
             </ul>
           </div>
@@ -104,15 +114,23 @@ export default function Footer({ locale = 'en' }: FooterProps) {
           <div>
             <h4 className="text-white font-semibold mb-4">{text.language.title}</h4>
             <ul className="space-y-2 text-sm">
-              <li>
-                <Link
-                  href={locale === 'zh' ? '/' : '/zh'}
-                  className="hover:text-white flex items-center gap-2"
-                >
-                  <FiGlobe className="w-4 h-4" />
-                  <span>{text.language.switchTo}</span>
-                </Link>
-              </li>
+              {languages.map((lang) => (
+                <li key={lang.code}>
+                  <Link
+                    href={pathname.replace(/^\/[a-z]{2}/, '').replace(/^\//, '') || '/'}
+                    locale={lang.code}
+                    className={`hover:text-white flex items-center gap-2 ${
+                      locale === lang.code ? 'text-blue-400' : ''
+                    }`}
+                  >
+                    <FiGlobe className="w-4 h-4" />
+                    <span>{lang.name}</span>
+                    {locale === lang.code && (
+                      <span className="text-xs text-gray-500">({text.language.current})</span>
+                    )}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
@@ -132,36 +150,8 @@ export default function Footer({ locale = 'en' }: FooterProps) {
           </div>
         </div>
 
-        <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-sm mb-4 md:mb-0">
-            {text.copyright.replace('{year}', currentYear.toString())}
-          </p>
-          <div className="flex gap-6">
-            <a
-              href="https://github.com/allenai/olmocr"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-white"
-            >
-              <FiGithub className="w-5 h-5" />
-            </a>
-            <a
-              href="https://twitter.com/allen_ai"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-white"
-            >
-              <FiTwitter className="w-5 h-5" />
-            </a>
-            <a
-              href="https://www.linkedin.com/company/allen-institute-for-artificial-intelligence/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-white"
-            >
-              <FiLinkedin className="w-5 h-5" />
-            </a>
-          </div>
+        <div className="text-center text-sm">
+          {text.copyright.replace('{year}', currentYear.toString())}
         </div>
       </div>
     </footer>

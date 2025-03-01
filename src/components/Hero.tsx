@@ -45,6 +45,12 @@ export default function Hero({ locale = 'en' }: HeroProps) {
       demoWarning: '⚠️ This is a demo version of olmOCR. For full features and batch processing, please use our toolkit. ⚠️',
       originalFile: 'Original File',
       processedResult: 'Processed Result',
+      supportedLanguages: 'Supported Languages',
+      languages: [
+        'English', 'Chinese (Simplified & Traditional)', 'Japanese', 'Korean',
+        'Russian', 'French', 'German', 'Spanish', 'Italian', 'Portuguese',
+        'Arabic', 'Hindi', 'Vietnamese', 'Thai', 'Indonesian'
+      ]
     },
     zh: {
       title: 'olmOCR - 免费在线文档识别',
@@ -69,6 +75,12 @@ export default function Hero({ locale = 'en' }: HeroProps) {
       demoWarning: '⚠️ 这是 olmOCR 的演示版本。如需完整功能和批量处理，请使用我们的工具包。 ⚠️',
       originalFile: '原始文件',
       processedResult: '处理结果',
+      supportedLanguages: '支持的语言',
+      languages: [
+        '英语', '中文（简体和繁体）', '日语', '韩语',
+        '俄语', '法语', '德语', '西班牙语', '意大利语', '葡萄牙语',
+        '阿拉伯语', '印地语', '越南语', '泰语', '印尼语'
+      ]
     }
   };
 
@@ -232,14 +244,16 @@ export default function Hero({ locale = 'en' }: HeroProps) {
             </div>
           </div>
           
-          <div className="bg-gray-50 dark:bg-gray-800 p-4 md:p-6 rounded-lg mb-8">
-            <h2 className="text-xl md:text-2xl font-semibold mb-4 text-gray-900 dark:text-white">{text.uploadTitle}</h2>
+          <div id="upload" className="bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 p-6 md:p-8 rounded-xl shadow-lg mb-8 transform transition-all duration-300 hover:shadow-xl">
+            <h2 className="text-2xl md:text-3xl font-bold mb-6 text-gray-900 dark:text-white text-center">
+              {text.uploadTitle}
+            </h2>
             <div 
-              className={`border-2 border-dashed ${
+              className={`border-3 border-dashed ${
                 loading 
                   ? 'border-gray-300 dark:border-gray-600' 
-                  : 'border-blue-300 dark:border-blue-500'
-              } rounded-lg p-4 md:p-8 text-center transition-colors bg-white dark:bg-gray-900`}
+                  : 'border-blue-400 dark:border-blue-500'
+              } rounded-xl p-8 md:p-12 text-center transition-all duration-300 bg-white/50 dark:bg-gray-800/50 hover:bg-white dark:hover:bg-gray-800`}
               onDrop={handleDrop}
               onDragOver={handleDragOver}
             >
@@ -253,36 +267,58 @@ export default function Hero({ locale = 'en' }: HeroProps) {
               />
               <label
                 htmlFor="file-upload"
-                className={`cursor-pointer flex flex-col items-center justify-center gap-3 md:gap-4 ${
+                className={`cursor-pointer flex flex-col items-center justify-center gap-4 ${
                   loading 
                     ? 'opacity-50' 
                     : 'hover:text-blue-600 dark:hover:text-blue-400'
                 } text-gray-700 dark:text-gray-300`}
               >
-                <FiUpload className="w-8 h-8 md:w-12 md:h-12" />
+                <FiUpload className="w-12 h-12 md:w-16 md:h-16" />
                 <div>
                   {loading ? (
                     <div className="flex flex-col items-center">
-                      <div className="animate-spin rounded-full h-5 w-5 md:h-6 md:w-6 border-b-2 border-blue-600 dark:border-blue-400 mb-2"></div>
-                      <span className="text-sm md:text-base">{processingStatus || text.processing}</span>
+                      <div className="animate-spin rounded-full h-6 w-6 md:h-8 md:w-8 border-b-2 border-blue-600 dark:border-blue-400 mb-3"></div>
+                      <span className="text-base md:text-lg font-medium">{processingStatus || text.processing}</span>
                     </div>
                   ) : (
                     <div>
                       {file ? (
-                        <span className="text-sm md:text-base">{text.uploadAnother}</span>
+                        <span className="text-base md:text-lg font-medium">{text.uploadAnother}</span>
                       ) : (
-                        <span className="text-sm md:text-base">
-                          {text.uploadText}<br />
-                          <span className="text-xs md:text-sm text-gray-500 dark:text-gray-400">{text.supportedFormats}</span>
-                        </span>
+                        <div>
+                          <span className="text-base md:text-lg font-medium block mb-2">
+                            {text.uploadText}
+                          </span>
+                          <span className="text-sm md:text-base text-gray-500 dark:text-gray-400 block">
+                            {text.supportedFormats}
+                          </span>
+                        </div>
                       )}
                     </div>
                   )}
                 </div>
               </label>
               {error && (
-                <p className="text-red-500 dark:text-red-400 text-xs md:text-sm mt-4">{error}</p>
+                <p className="text-red-500 dark:text-red-400 text-sm md:text-base mt-4 bg-red-50 dark:bg-red-900/20 p-3 rounded-lg">
+                  {error}
+                </p>
               )}
+            </div>
+          </div>
+
+          <div className="mb-12">
+            <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white text-center">
+              {text.supportedLanguages}
+            </h3>
+            <div className="flex flex-wrap justify-center gap-2">
+              {text.languages.map((lang, index) => (
+                <span
+                  key={index}
+                  className="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full text-sm"
+                >
+                  {lang}
+                </span>
+              ))}
             </div>
           </div>
 

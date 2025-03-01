@@ -23,18 +23,6 @@ export default function Showcase({ locale = 'en' }: ShowcaseProps) {
       placeholder: 'Click on any example above to see the recognition result',
       cases: [
         {
-          id: 'academic',
-          title: 'Academic Papers',
-          description: 'Process academic papers with complex layouts, formulas, and references',
-          image: '/showcase/academic.jpg'
-        },
-        {
-          id: 'math',
-          title: 'Math Textbooks',
-          description: 'Extract mathematical equations, diagrams, and explanations accurately',
-          image: '/showcase/math.jpg'
-        },
-        {
           id: 'handwriting',
           title: 'Handwriting',
           description: 'Convert handwritten notes and manuscripts to digital text',
@@ -45,6 +33,18 @@ export default function Showcase({ locale = 'en' }: ShowcaseProps) {
           title: 'Historical Documents',
           description: 'Digitize historical documents while preserving their authenticity',
           image: '/showcase/historical.jpg'
+        },
+        {
+          id: 'academic',
+          title: 'Academic Papers',
+          description: 'Process academic papers with complex layouts, formulas, and references',
+          image: '/showcase/academic.jpg'
+        },
+        {
+          id: 'math',
+          title: 'Math Textbooks',
+          description: 'Extract mathematical equations, diagrams, and explanations accurately',
+          image: '/showcase/math.jpg'
         }
       ]
     },
@@ -58,18 +58,6 @@ export default function Showcase({ locale = 'en' }: ShowcaseProps) {
       placeholder: '点击上方任意示例查看识别结果',
       cases: [
         {
-          id: 'academic',
-          title: '学术论文',
-          description: '处理包含复杂排版、公式和参考文献的学术论文',
-          image: '/showcase/academic.jpg'
-        },
-        {
-          id: 'math',
-          title: '数学教科书',
-          description: '准确提取数学方程式、图表和解释说明',
-          image: '/showcase/math.jpg'
-        },
-        {
           id: 'handwriting',
           title: '手写文档',
           description: '将手写笔记和手稿转换为数字文本',
@@ -80,6 +68,18 @@ export default function Showcase({ locale = 'en' }: ShowcaseProps) {
           title: '历史文件',
           description: '数字化历史文档的同时保持其真实性',
           image: '/showcase/historical.jpg'
+        },
+        {
+          id: 'academic',
+          title: '学术论文',
+          description: '处理包含复杂排版、公式和参考文献的学术论文',
+          image: '/showcase/academic.jpg'
+        },
+        {
+          id: 'math',
+          title: '数学教科书',
+          description: '准确提取数学方程式、图表和解释说明',
+          image: '/showcase/math.jpg'
         }
       ]
     }
@@ -94,6 +94,12 @@ export default function Showcase({ locale = 'en' }: ShowcaseProps) {
       setLoading(true);
       setSelectedTitle(title);
       setResult(''); // 清空之前的结果
+
+      // 滚动到结果区域
+      const resultSection = document.getElementById('result-section');
+      if (resultSection) {
+        resultSection.scrollIntoView({ behavior: 'smooth' });
+      }
 
       const response = await fetch(imagePath);
       const blob = await response.blob();
@@ -169,7 +175,7 @@ export default function Showcase({ locale = 'en' }: ShowcaseProps) {
           ))}
         </div>
 
-        <div className="bg-white dark:bg-gray-800 rounded-lg p-6 mt-8">
+        <div id="result-section" className="bg-white dark:bg-gray-800 rounded-lg p-6 mt-8">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
               {selectedTitle || text.resultTitle}

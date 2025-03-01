@@ -1,4 +1,4 @@
-import { FiImage, FiMaximize2, FiSun, FiCrop } from 'react-icons/fi';
+import { FiImage, FiMaximize2, FiSun, FiCrop, FiClock, FiShield } from 'react-icons/fi';
 
 interface TipsProps {
   locale?: string;
@@ -7,54 +7,54 @@ interface TipsProps {
 export default function Tips({ locale = 'en' }: TipsProps) {
   const t = {
     en: {
-      title: 'Best Practices',
-      subtitle: 'Follow these tips for optimal recognition results',
+      title: 'Tips & Best Practices',
+      subtitle: 'Get the most accurate results with these recommendations',
       tips: [
         {
-          icon: <FiImage className="w-6 h-6" />,
-          title: 'Choose the Right Format',
-          description: 'Use clear PDFs or high-quality images, avoid blurry or over-compressed images'
+          icon: <FiImage className="w-8 h-8" />,
+          title: 'Image Quality',
+          description: 'For best results, use clear, high-resolution images. Recommended minimum resolution is 300 DPI.'
         },
         {
-          icon: <FiMaximize2 className="w-6 h-6" />,
-          title: 'Maintain Proper Resolution',
-          description: 'Scan documents at 300 DPI or higher for optimal text clarity'
+          icon: <FiMaximize2 className="w-8 h-8" />,
+          title: 'File Size',
+          description: 'Supports files up to 50MB. For larger files, consider splitting into smaller parts.'
         },
         {
-          icon: <FiSun className="w-6 h-6" />,
-          title: 'Ensure Good Lighting',
-          description: 'When capturing documents, ensure adequate lighting and avoid glare or shadows'
+          icon: <FiClock className="w-8 h-8" />,
+          title: 'Processing Time',
+          description: 'Most documents are processed within 5-10 seconds. Complex layouts may take slightly longer.'
         },
         {
-          icon: <FiCrop className="w-6 h-6" />,
-          title: 'Crop Appropriately',
-          description: 'Trim unnecessary margins and ensure the document fills the frame properly'
+          icon: <FiShield className="w-8 h-8" />,
+          title: 'Security',
+          description: 'All processing is done locally in your browser. Your files never leave your device.'
         }
       ]
     },
     zh: {
-      title: '最佳实践',
-      subtitle: '遵循这些技巧以获得最佳识别效果',
+      title: '使用技巧和最佳实践',
+      subtitle: '遵循这些建议获得最准确的结果',
       tips: [
         {
-          icon: <FiImage className="w-6 h-6" />,
-          title: '选择正确的格式',
-          description: '使用清晰的 PDF 或高质量图片，避免模糊或过度压缩的图片'
+          icon: <FiImage className="w-8 h-8" />,
+          title: '图像质量',
+          description: '为获得最佳效果，请使用清晰的高分辨率图像。建议最低分辨率为300 DPI。'
         },
         {
-          icon: <FiMaximize2 className="w-6 h-6" />,
-          title: '保持适当的分辨率',
-          description: '扫描文档时使用 300 DPI 或更高分辨率以获得最佳文字清晰度'
+          icon: <FiMaximize2 className="w-8 h-8" />,
+          title: '文件大小',
+          description: '支持最大50MB的文件。对于更大的文件，建议分割成小部分。'
         },
         {
-          icon: <FiSun className="w-6 h-6" />,
-          title: '确保良好的光线',
-          description: '拍摄文档时，确保光线充足，避免眩光或阴影'
+          icon: <FiClock className="w-8 h-8" />,
+          title: '处理时间',
+          description: '大多数文档在5-10秒内完成处理。复杂布局可能需要稍长时间。'
         },
         {
-          icon: <FiCrop className="w-6 h-6" />,
-          title: '适当裁剪',
-          description: '修剪不必要的边距，确保文档正确填充画面'
+          icon: <FiShield className="w-8 h-8" />,
+          title: '安全性',
+          description: '所有处理都在您的浏览器本地完成。您的文件永远不会离开您的设备。'
         }
       ]
     }

@@ -1,4 +1,4 @@
-import { FiFileText, FiTable, FiEdit3, FiCpu } from 'react-icons/fi';
+import { FiFileText, FiTable, FiEdit3, FiCpu, FiLock, FiZap, FiGrid, FiType, FiLayout, FiCode } from 'react-icons/fi';
 
 interface FeaturesProps {
   locale?: string;
@@ -7,52 +7,74 @@ interface FeaturesProps {
 export default function Features({ locale = 'en' }: FeaturesProps) {
   const t = {
     en: {
-      title: 'Powerful OCR Features',
+      title: 'Why Choose olmOCR',
+      subtitle: 'Advanced features that make document conversion effortless',
       features: [
         {
-          icon: <FiFileText className="w-8 h-8" />,
-          title: 'High-Precision OCR',
-          description: 'Advanced AI technology for accurate recognition of various fonts and text formats'
+          icon: <FiLock className="w-8 h-8" />,
+          title: 'Privacy First',
+          description: 'Your files are processed locally and automatically deleted. No data is stored or shared.'
         },
         {
-          icon: <FiTable className="w-8 h-8" />,
+          icon: <FiZap className="w-8 h-8" />,
+          title: 'Lightning Fast',
+          description: 'Process documents in seconds with our optimized AI engine. Handle multiple pages efficiently.'
+        },
+        {
+          icon: <FiGrid className="w-8 h-8" />,
           title: 'Table Recognition',
-          description: 'Intelligent detection of table structures while maintaining data integrity and format'
+          description: 'Accurately extract tables while maintaining structure. Perfect for financial documents and reports.'
         },
         {
-          icon: <FiEdit3 className="w-8 h-8" />,
-          title: 'Handwriting Recognition',
-          description: 'Support for handwritten text recognition, easily convert handwritten notes to digital format'
+          icon: <FiType className="w-8 h-8" />,
+          title: 'Multi-Language Support',
+          description: 'Recognize text in 100+ languages including Chinese, English, Japanese, and Korean.'
         },
         {
-          icon: <FiCpu className="w-8 h-8" />,
-          title: 'Smart Layout Analysis',
-          description: 'Automatic detection of document layout, preserving original reading order and structure'
+          icon: <FiLayout className="w-8 h-8" />,
+          title: 'Layout Preservation',
+          description: 'Maintain original document formatting including columns, paragraphs, and text styles.'
+        },
+        {
+          icon: <FiCode className="w-8 h-8" />,
+          title: 'Open Source',
+          description: 'Free to use and modify. Join our community to contribute and improve olmOCR together.'
         }
       ]
     },
     zh: {
-      title: '强大的 OCR 功能',
+      title: '为什么选择 olmOCR',
+      subtitle: '让文档转换变得轻松的高级功能',
       features: [
         {
-          icon: <FiFileText className="w-8 h-8" />,
-          title: '高精度 OCR',
-          description: '先进的 AI 技术，准确识别各种字体和文本格式'
+          icon: <FiLock className="w-8 h-8" />,
+          title: '隐私优先',
+          description: '文件在本地处理并自动删除。不存储或共享任何数据。'
         },
         {
-          icon: <FiTable className="w-8 h-8" />,
+          icon: <FiZap className="w-8 h-8" />,
+          title: '极速处理',
+          description: '优化的 AI 引擎几秒内完成处理。高效处理多页文档。'
+        },
+        {
+          icon: <FiGrid className="w-8 h-8" />,
           title: '表格识别',
-          description: '智能检测表格结构，同时保持数据完整性和格式'
+          description: '准确提取表格并保持结构。完美适用于财务文档和报告。'
         },
         {
-          icon: <FiEdit3 className="w-8 h-8" />,
-          title: '手写识别',
-          description: '支持手写文本识别，轻松将手写笔记转换为数字格式'
+          icon: <FiType className="w-8 h-8" />,
+          title: '多语言支持',
+          description: '支持识别100多种语言，包括中文、英文、日文和韩文。'
         },
         {
-          icon: <FiCpu className="w-8 h-8" />,
-          title: '智能布局分析',
-          description: '自动检测文档布局，保持原始阅读顺序和结构'
+          icon: <FiLayout className="w-8 h-8" />,
+          title: '布局保持',
+          description: '保持原始文档格式，包括列、段落和文本样式。'
+        },
+        {
+          icon: <FiCode className="w-8 h-8" />,
+          title: '开源免费',
+          description: '免费使用和修改。加入我们的社区，一起改进 olmOCR。'
         }
       ]
     }

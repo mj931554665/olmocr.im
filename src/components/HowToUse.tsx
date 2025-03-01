@@ -8,53 +8,53 @@ export default function HowToUse({ locale = 'en' }: HowToUseProps) {
   const t = {
     en: {
       title: 'How to Use olmOCR',
-      subtitle: 'Follow these simple steps to convert your documents',
+      subtitle: 'Start converting your documents in 4 simple steps - No registration required!',
       steps: [
         {
           icon: <FiUpload className="w-8 h-8" />,
           title: 'Upload Document',
-          description: 'Upload your PDF or image file by clicking the upload button or dragging and dropping'
+          description: 'Simply drag & drop your PDF or image file, or click to select. Supports multiple formats including PDF, JPG, PNG.'
         },
         {
           icon: <FiCpu className="w-8 h-8" />,
-          title: 'Automatic Processing',
-          description: 'olmOCR will automatically process your document using advanced AI technology'
+          title: 'Instant Processing',
+          description: 'Our AI instantly processes your document, maintaining layout and formatting. Most files are processed within seconds.'
         },
         {
           icon: <FiEdit className="w-8 h-8" />,
-          title: 'Review Results',
-          description: 'Check the extracted text, tables, and other content in the preview window'
+          title: 'Review & Edit',
+          description: 'Preview the extracted text in real-time. Check formatting, tables, and special characters - all accurately preserved.'
         },
         {
           icon: <FiDownload className="w-8 h-8" />,
-          title: 'Download or Copy',
-          description: 'Download the results or copy the text directly to your clipboard'
+          title: 'Save Results',
+          description: 'Copy text directly or download the results. Your documents are automatically deleted after processing for privacy.'
         }
       ]
     },
     zh: {
       title: '如何使用 olmOCR',
-      subtitle: '按照以下简单步骤转换您的文档',
+      subtitle: '4个简单步骤开始转换文档 - 无需注册！',
       steps: [
         {
           icon: <FiUpload className="w-8 h-8" />,
           title: '上传文档',
-          description: '点击上传按钮或拖放文件来上传您的 PDF 或图片文件'
+          description: '直接拖放或点击选择您的 PDF 或图片文件。支持多种格式，包括 PDF、JPG、PNG 等。'
         },
         {
           icon: <FiCpu className="w-8 h-8" />,
-          title: '自动处理',
-          description: 'olmOCR 将使用先进的 AI 技术自动处理您的文档'
+          title: '即时处理',
+          description: '我们的 AI 立即处理您的文档，保持原有布局和格式。大多数文件在几秒内完成处理。'
         },
         {
           icon: <FiEdit className="w-8 h-8" />,
-          title: '查看结果',
-          description: '在预览窗口中检查提取的文本、表格和其他内容'
+          title: '检查编辑',
+          description: '实时预览提取的文本。检查格式、表格和特殊字符 - 所有内容都准确保留。'
         },
         {
           icon: <FiDownload className="w-8 h-8" />,
-          title: '下载或复制',
-          description: '下载结果或直接将文本复制到剪贴板'
+          title: '保存结果',
+          description: '直接复制文本或下载结果。处理完成后自动删除您的文档以保护隐私。'
         }
       ]
     }

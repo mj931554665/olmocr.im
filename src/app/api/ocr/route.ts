@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
 import { headers } from 'next/headers';
 
-// 设置超时时间为30秒
-const TIMEOUT = 30000;
+// 设置超时时间为50秒
+const TIMEOUT = 50000;
 const MAX_RETRIES = 3;
 const RETRY_DELAY = 2000;
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
@@ -11,7 +11,7 @@ const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Requested-With',
 };
 
 // OPTIONS 预检请求处理
@@ -76,7 +76,7 @@ async function processRequest(formData: FormData): Promise<Response> {
     console.error('No file received');
     return NextResponse.json(
       { error: 'No file provided' },
-      { status: 400 }
+      { status: 400, headers: corsHeaders }
     );
   }
 
@@ -85,15 +85,16 @@ async function processRequest(formData: FormData): Promise<Response> {
     console.error('File too large:', file.size);
     return NextResponse.json(
       { error: 'File too large, maximum size is 10MB' },
-      { status: 413 }
+      { status: 413, headers: corsHeaders }
     );
   }
 
-  // 打印文件信息
+  // 打印详细的文件信息用于调试
   console.log('File info:', {
     name: file.name,
     type: file.type,
-    size: file.size
+    size: file.size,
+    lastModified: file.lastModified
   });
 
   // 创建新的FormData
@@ -112,10 +113,12 @@ async function processRequest(formData: FormData): Promise<Response> {
       body: newFormData,
       signal: controller.signal,
       headers: {
-        'Accept': 'application/json',
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)',
-        'Origin': 'https://olmocr.im',
-        'Referer': 'https://olmocr.im/'
+        'Accept': '*/*',
+        'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko)',
+        'Origin': 'https://www.olmocr.com',
+        'Referer': 'https://www.olmocr.com/',
+        'Connection': 'keep-alive'
       },
     });
 
@@ -135,7 +138,7 @@ async function processRequest(formData: FormData): Promise<Response> {
           error: `OCR service error: ${response.statusText}`,
           details: errorText
         },
-        { status: response.status }
+        { status: response.status, headers: corsHeaders }
       );
     }
 
@@ -143,9 +146,11 @@ async function processRequest(formData: FormData): Promise<Response> {
     const data = await response.json();
     console.log('Response data:', data);
 
-    return NextResponse.json(data);
+    return NextResponse.json(data, { headers: corsHeaders });
   } catch (error: unknown) {
     clearTimeout(timeoutId);
+    console.error('Detailed error:', error);
+    
     if (error instanceof Error) {
       if (error.name === 'AbortError') {
         console.error('Request timeout');
@@ -154,7 +159,7 @@ async function processRequest(formData: FormData): Promise<Response> {
             error: 'Request timeout',
             details: 'The OCR service is taking too long to respond. Please try again.'
           },
-          { status: 504 }
+          { status: 504, headers: corsHeaders }
         );
       }
       console.error('Error processing request:', {
@@ -163,12 +168,13 @@ async function processRequest(formData: FormData): Promise<Response> {
         stack: error.stack
       });
     }
+    
     return NextResponse.json(
       { 
         error: 'Internal server error',
         details: error instanceof Error ? error.message : 'Unknown error'
       },
-      { status: 500 }
+      { status: 500, headers: corsHeaders }
     );
   }
 }

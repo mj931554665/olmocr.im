@@ -17,7 +17,7 @@ export default function FAQ({ locale = 'en' }: FAQProps) {
       faqs: [
         {
           question: 'What file formats does olmOCR support?',
-          answer: 'olmOCR supports various file formats including PDF, JPG, PNG, TIFF, and other common image formats. The maximum file size limit is 10MB for the free version.'
+          answer: 'olmOCR supports common image formats including JPG, PNG, and TIFF. The maximum file size limit is 10MB for the free version.'
         },
         {
           question: 'How accurate is the text recognition?',
@@ -39,7 +39,7 @@ export default function FAQ({ locale = 'en' }: FAQProps) {
       faqs: [
         {
           question: 'olmOCR 支持哪些文件格式？',
-          answer: 'olmOCR 支持多种文件格式，包括 PDF、JPG、PNG、TIFF 和其他常见图片格式。免费版本的最大文件大小限制为 10MB。'
+          answer: 'olmOCR 支持常见的图片格式，包括 JPG、PNG 和 TIFF。免费版本的最大文件大小限制为 10MB。'
         },
         {
           question: '文字识别的准确率如何？',

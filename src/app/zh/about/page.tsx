@@ -21,7 +21,7 @@ export default function ZhAbout() {
       <section className="mb-12">
         <h2 className="text-2xl font-semibold mb-4">项目概述</h2>
         <p className="text-gray-600 dark:text-gray-300 mb-4">
-          olmOCR 是一个开源的文字识别工具，专注于提供高质量的 PDF 和图片文字提取服务。
+          olmOCR 是一个开源的文字识别工具，专注于提供高质量的图片文字提取服务。
           我们的目标是让文字识别技术更加便捷、准确和易用。
         </p>
       </section>
@@ -29,7 +29,7 @@ export default function ZhAbout() {
       <section className="mb-12">
         <h2 className="text-2xl font-semibold mb-4">核心功能</h2>
         <ul className="list-disc list-inside space-y-2 text-gray-600 dark:text-gray-300">
-          <li>支持多种文件格式（PDF、图片）</li>
+          <li>支持多种图片格式（JPEG、PNG）</li>
           <li>高精度表格识别</li>
           <li>数学公式识别</li>
           <li>手写文字识别</li>

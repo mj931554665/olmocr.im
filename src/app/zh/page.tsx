@@ -10,8 +10,8 @@ import { siteConfig } from '../metadata';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'olmOCR - 免费在线 PDF 和图片文字识别工具',
-  description: 'olmOCR 是一款免费的在线工具，可以将 PDF 和图片转换为文本。使用 olmOCR 高精度处理文档，支持表格、公式和手写文字识别。',
+  title: 'olmOCR - 免费在线图片文字识别工具',
+  description: 'olmOCR 是一款免费的在线工具，可以将图片转换为文本。使用 olmOCR 高精度处理文档，支持表格、公式和手写文字识别。',
   alternates: {
     canonical: `${siteConfig.url}/zh`,
     languages: {

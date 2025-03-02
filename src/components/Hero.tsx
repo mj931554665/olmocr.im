@@ -33,7 +33,7 @@ export default function Hero({ locale = 'en' }: HeroProps) {
       uploadTitle: 'Upload to olmOCR',
       uploadText: 'Click or drag file to upload to olmOCR',
       uploadAnother: 'Upload another file to olmOCR',
-      supportedFormats: 'Supports PDF and images',
+      supportedFormats: 'Supports images (JPEG, PNG)',
       processing: 'Processing document...',
       processingTip: 'Processing time may vary depending on document length and complexity',
       processingLong: 'Processing large content, this may take a minute...',
@@ -64,7 +64,7 @@ export default function Hero({ locale = 'en' }: HeroProps) {
       uploadTitle: '上传到 olmOCR',
       uploadText: '点击或拖拽文件上传到 olmOCR',
       uploadAnother: '上传另一个文件到 olmOCR',
-      supportedFormats: '支持 PDF 和图片格式',
+      supportedFormats: '支持图片格式（JPEG、PNG）',
       processing: '正在处理文档...',
       processingTip: '处理时间可能因文档长度和复杂度而异',
       processingLong: '正在处理大量内容，可能需要一分钟...',
@@ -273,7 +273,7 @@ export default function Hero({ locale = 'en' }: HeroProps) {
               <input
                 type="file"
                 onChange={handleFileChange}
-                accept="image/*,.pdf"
+                accept="image/jpeg,image/jpg,image/png"
                 className="hidden"
                 id="file-upload"
                 disabled={loading}

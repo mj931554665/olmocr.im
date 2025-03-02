@@ -115,10 +115,14 @@ export default function Hero({ locale = 'en' }: HeroProps) {
         }, 30000);
 
         const startTime = Date.now();
-        const response = await fetch('/api/ocr', {
+        const response = await fetch('https://olmocr.olmocr.im/ocr', {
           method: 'POST',
           body: formData,
-          signal: controller.signal
+          signal: controller.signal,
+          headers: {
+            'Accept': '*/*',
+            'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
+          }
         });
 
         clearTimeout(timeoutId);
@@ -244,16 +248,16 @@ export default function Hero({ locale = 'en' }: HeroProps) {
             </div>
           </div>
           
-          <div id="upload" className="bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 p-6 md:p-8 rounded-xl shadow-lg mb-8 transform transition-all duration-300 hover:shadow-xl">
+          <div id="upload" className="bg-white dark:bg-gray-900 p-6 md:p-8 rounded-xl shadow-sm mb-8 transition-all duration-300 hover:shadow-md">
             <h2 className="text-2xl md:text-3xl font-bold mb-6 text-gray-900 dark:text-white text-center">
               {text.uploadTitle}
             </h2>
             <div 
-              className={`border-3 border-dashed ${
+              className={`border-2 border-dashed ${
                 loading 
                   ? 'border-gray-300 dark:border-gray-600' 
                   : 'border-blue-400 dark:border-blue-500'
-              } rounded-xl p-8 md:p-12 text-center transition-all duration-300 bg-white/50 dark:bg-gray-800/50 hover:bg-white dark:hover:bg-gray-800`}
+              } rounded-xl p-8 md:p-12 text-center transition-all duration-300 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700`}
               onDrop={handleDrop}
               onDragOver={handleDragOver}
             >
@@ -355,6 +359,12 @@ export default function Hero({ locale = 'en' }: HeroProps) {
                     )}
                   </div>
                   <div className="relative">
+                    {loading ? (
+                      <div className="absolute inset-0 flex flex-col items-center justify-center bg-gray-50 dark:bg-gray-800 rounded-lg">
+                        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600 dark:border-blue-400 mb-4"></div>
+                        <p className="text-gray-600 dark:text-gray-300">{processingStatus || text.processing}</p>
+                      </div>
+                    ) : null}
                     <textarea
                       value={result}
                       readOnly

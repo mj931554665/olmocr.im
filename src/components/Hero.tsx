@@ -93,8 +93,18 @@ export default function Hero({ locale = 'en' }: HeroProps) {
     setError(null);
     setProcessingStatus(text.processing);
     setOriginalFileName(file.name);
+
+    // 生成新的文件名
+    const ext = file.name.split('.').pop()?.toLowerCase() || '';
+    const timestamp = Date.now();
+    const randomString = Math.random().toString(36).substring(2, 8);
+    const newFileName = `olmocr_${timestamp}_${randomString}.${ext}`;
+    
+    // 创建新的 File 对象，使用新的文件名
+    const renamedFile = new File([file], newFileName, { type: file.type });
+    
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append('file', renamedFile);
 
     const maxRetries = 3;
     let retryCount = 0;

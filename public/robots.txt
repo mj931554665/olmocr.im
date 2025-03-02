@@ -1,0 +1,11 @@
+# *
+User-agent: *
+Allow: /
+Disallow: /api
+
+# Host
+Host: https://olmocr.im
+
+# Sitemaps
+Sitemap: https://olmocr.im/sitemap.xml
+Sitemap: https://olmocr.im/server-sitemap.xml

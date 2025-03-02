@@ -34,7 +34,8 @@ export default function Hero({ locale = 'en' }: HeroProps) {
       uploadText: 'Click or drag file to upload to olmOCR',
       uploadAnother: 'Upload another file to olmOCR',
       supportedFormats: 'Supports PDF and images',
-      processing: 'Processing with olmOCR...',
+      processing: 'Processing document...',
+      processingTip: 'Processing time may vary depending on document length and complexity',
       processingLong: 'Processing large content, this may take a minute...',
       processingRetry: 'Still processing, please wait...',
       processingTimeout: 'Taking longer than expected, but still working...',
@@ -64,7 +65,8 @@ export default function Hero({ locale = 'en' }: HeroProps) {
       uploadText: '点击或拖拽文件上传到 olmOCR',
       uploadAnother: '上传另一个文件到 olmOCR',
       supportedFormats: '支持 PDF 和图片格式',
-      processing: '正在使用 olmOCR 处理...',
+      processing: '正在处理文档...',
+      processingTip: '处理时间可能因文档长度和复杂度而异',
       processingLong: '正在处理大量内容，可能需要一分钟...',
       processingRetry: '仍在处理中，请稍候...',
       processingTimeout: '处理时间超出预期，但仍在继续...',
@@ -150,6 +152,15 @@ export default function Hero({ locale = 'en' }: HeroProps) {
         }
 
         setResult(data.text || '');
+        
+        // 等待 DOM 更新
+        setTimeout(() => {
+          const resultElement = document.getElementById('ocr-result');
+          if (resultElement) {
+            resultElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }, 100);
+        
         break;
       } catch (error) {
         console.error('Error during OCR:', error);
@@ -169,22 +180,20 @@ export default function Hero({ locale = 'en' }: HeroProps) {
     setProcessingStatus('');
   };
 
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files?.[0];
-    if (selectedFile) {
-      setFile(selectedFile);
-      setError(null);
-      await processFile(selectedFile);
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setFile(file);
+      await processFile(file);
     }
   };
 
-  const handleDrop = async (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    const droppedFile = e.dataTransfer.files[0];
-    if (droppedFile) {
-      setFile(droppedFile);
-      setError(null);
-      await processFile(droppedFile);
+  const handleDrop = async (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    const file = event.dataTransfer.files?.[0];
+    if (file) {
+      setFile(file);
+      await processFile(file);
     }
   };
 
@@ -282,7 +291,8 @@ export default function Hero({ locale = 'en' }: HeroProps) {
                   {loading ? (
                     <div className="flex flex-col items-center">
                       <div className="animate-spin rounded-full h-6 w-6 md:h-8 md:w-8 border-b-2 border-blue-600 dark:border-blue-400 mb-3"></div>
-                      <span className="text-base md:text-lg font-medium">{processingStatus || text.processing}</span>
+                      <span className="text-base md:text-lg font-medium mb-2">{processingStatus || text.processing}</span>
+                      <span className="text-sm text-gray-500 dark:text-gray-400">{text.processingTip}</span>
                     </div>
                   ) : (
                     <div>
@@ -327,7 +337,7 @@ export default function Hero({ locale = 'en' }: HeroProps) {
           </div>
 
           {(file || result) && (
-            <div className="bg-gray-50 dark:bg-gray-800 p-4 md:p-6 rounded-lg">
+            <div id="ocr-result" className="bg-gray-50 dark:bg-gray-800 p-4 md:p-6 rounded-lg">
               <h2 className="text-xl md:text-2xl font-semibold mb-4 text-gray-900 dark:text-white">{text.resultTitle}</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="bg-white dark:bg-gray-900 p-3 md:p-4 rounded-lg">

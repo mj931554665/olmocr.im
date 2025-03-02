@@ -153,7 +153,7 @@ export default function Hero({ locale = 'en' }: HeroProps) {
 
         setResult(data.text || '');
         
-        // 等待 DOM 更新
+        // 等待 DOM 更新后滚动到结果区域
         setTimeout(() => {
           const resultElement = document.getElementById('ocr-result');
           if (resultElement) {

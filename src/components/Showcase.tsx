@@ -140,7 +140,7 @@ export default function Showcase({ locale = 'en' }: ShowcaseProps) {
   };
 
   return (
-    <section id="showcase" className="py-16 bg-gray-50 dark:bg-gray-900">
+    <section id="showcase" className="py-16 bg-white dark:bg-gray-900">
       <div className="container mx-auto max-w-6xl px-4">
         <h2 className="text-3xl font-bold text-center mb-4 text-gray-900 dark:text-white">
           {text.title}
